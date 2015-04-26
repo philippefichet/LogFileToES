@@ -1,7 +1,7 @@
 # LogFileToES
 
 # Why
-It's simple and speed log parser (Java Regex) and send into ElasticSearch
+Simple and speed log parser (Java Regex) and send into ElasticSearch
 
 # Command
     java -Dfr.logfiletoes.config.file="config_file.json" -Djava.util.logging.config.file="path/to/logging.properties"  -jar logfileToEs-1.0-SNAPSHOT-jar-with-dependencies
