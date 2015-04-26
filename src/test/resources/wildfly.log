@@ -1,0 +1,187 @@
+2015-03-30 11:46:05,232 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-16) JBAS010409: Unbound data source [java:jboss/datasources/test]
+2015-03-30 11:46:05,235 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-2) JBAS010409: Unbound data source [java:jboss/datasources/ExampleDS]
+2015-03-30 11:46:05,243 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-1) JBAS010418: Stopped Driver service with driver-name = hsqldb
+2015-03-30 11:46:05,244 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-1) JBAS010418: Stopped Driver service with driver-name = h2
+2015-03-30 11:46:05,247 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) JBAS017521: Undertow HTTP listener default suspending
+2015-03-30 11:46:05,247 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-4) JBAS017532: Host default-host stopping
+2015-03-30 11:46:05,249 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) JBAS017520: Undertow HTTP listener default stopped, was bound to /127.0.0.1:8080
+2015-03-30 11:46:05,252 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-7) JBAS017506: Undertow 1.1.0.Final stopping
+2015-03-30 11:46:05,262 INFO  [org.jboss.as] (MSC service thread 1-3) JBAS015950: WildFly 8.2.0.Final "Tweek" stopped in 17ms
+2015-03-30 11:46:22,332 INFO  [org.jboss.modules] (main) JBoss Modules version 1.3.3.Final
+2015-03-30 11:46:22,484 INFO  [org.jboss.msc] (main) JBoss MSC version 1.2.2.Final
+2015-03-30 11:46:22,549 INFO  [org.jboss.as] (MSC service thread 1-8) JBAS015899: WildFly 8.2.0.Final "Tweek" starting
+2015-03-30 11:46:22,554 DEBUG [org.jboss.as.config] (MSC service thread 1-8) Configured system properties:
+	awt.toolkit = sun.awt.X11.XToolkit
+	file.encoding = UTF-8
+	file.encoding.pkg = sun.io
+	file.separator = /
+	java.awt.graphicsenv = sun.awt.X11GraphicsEnvironment
+	java.awt.printerjob = sun.print.PSPrinterJob
+	java.class.path = /xxx/wildfly-8.2.0.Final/jboss-modules.jar
+	java.class.version = 52.0
+	java.endorsed.dirs = /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/endorsed
+	java.ext.dirs = /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext:/usr/java/packages/lib/ext
+	java.home = /usr/lib/jvm/java-8-openjdk-amd64/jre
+	java.io.tmpdir = /tmp
+	java.library.path = /usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+	java.runtime.name = OpenJDK Runtime Environment
+	java.runtime.version = 1.8.0_40-internal-b09
+	java.specification.name = Java Platform API Specification
+	java.specification.vendor = Oracle Corporation
+	java.specification.version = 1.8
+	java.util.logging.manager = org.jboss.logmanager.LogManager
+	java.vendor = Oracle Corporation
+	java.vendor.url = http://java.oracle.com/
+	java.vendor.url.bug = http://bugreport.sun.com/bugreport/
+	java.version = 1.8.0_40-internal
+	java.vm.info = mixed mode
+	java.vm.name = OpenJDK 64-Bit Server VM
+	java.vm.specification.name = Java Virtual Machine Specification
+	java.vm.specification.vendor = Oracle Corporation
+	java.vm.specification.version = 1.8
+	java.vm.vendor = Oracle Corporation
+	java.vm.version = 25.40-b13
+	javax.management.builder.initial = org.jboss.as.jmx.PluggableMBeanServerBuilder
+	javax.xml.datatype.DatatypeFactory = __redirected.__DatatypeFactory
+	javax.xml.parsers.DocumentBuilderFactory = __redirected.__DocumentBuilderFactory
+	javax.xml.parsers.SAXParserFactory = __redirected.__SAXParserFactory
+	javax.xml.stream.XMLEventFactory = __redirected.__XMLEventFactory
+	javax.xml.stream.XMLInputFactory = __redirected.__XMLInputFactory
+	javax.xml.stream.XMLOutputFactory = __redirected.__XMLOutputFactory
+	javax.xml.transform.TransformerFactory = __redirected.__TransformerFactory
+	javax.xml.validation.SchemaFactory:http://www.w3.org/2001/XMLSchema = __redirected.__SchemaFactory
+	javax.xml.xpath.XPathFactory:http://java.sun.com/jaxp/xpath/dom = __redirected.__XPathFactory
+	jboss.bundles.dir = /xxx/wildfly-8.2.0.Final/bundles
+	jboss.home.dir = /xxx/wildfly-8.2.0.Final
+	jboss.host.name = xxx
+	jboss.modules.dir = /xxx/wildfly-8.2.0.Final/modules
+	jboss.node.name = xxx
+	jboss.qualified.host.name = xxx
+	jboss.server.base.dir = /xxx/wildfly-8.2.0.Final/standalone
+	jboss.server.config.dir = /xxx/wildfly-8.2.0.Final/standalone/configuration
+	jboss.server.data.dir = /xxx/wildfly-8.2.0.Final/standalone/data
+	jboss.server.deploy.dir = /xxx/wildfly-8.2.0.Final/standalone/data/content
+	jboss.server.log.dir = /xxx/wildfly-8.2.0.Final/standalone/log
+	jboss.server.name = xxx
+	jboss.server.persist.config = true
+	jboss.server.temp.dir = /xxx/wildfly-8.2.0.Final/standalone/tmp
+	line.separator = 
+
+	logging.configuration = file:/xxx/wildfly-8.2.0.Final/standalone/configuration/logging.properties
+	module.path = /xxx/wildfly-8.2.0.Final/modules
+	org.jboss.boot.log.file = /xxx/wildfly-8.2.0.Final/standalone/log/server.log
+	org.jboss.resolver.warning = true
+	org.xml.sax.driver = __redirected.__XMLReaderFactory
+	os.arch = amd64
+	os.name = Linux
+	os.version = 3.16.0-33-generic
+	path.separator = :
+	sun.arch.data.model = 64
+	sun.boot.class.path = /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/resources.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/sunrsasign.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jsse.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jce.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/charsets.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/jfr.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/classes
+	sun.boot.library.path = /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64
+	sun.cpu.endian = little
+	sun.cpu.isalist = 
+	sun.io.unicode.encoding = UnicodeLittle
+	sun.java.command = /xxx/wildfly-8.2.0.Final/jboss-modules.jar -mp /xxx/wildfly-8.2.0.Final/modules org.jboss.as.standalone -server-config standalone.xml
+	sun.java.launcher = SUN_STANDARD
+	sun.jnu.encoding = UTF-8
+	sun.management.compiler = HotSpot 64-Bit Tiered Compilers
+	sun.os.patch.level = unknown
+	user.country = US
+	user.dir = /xxx/
+	user.home = /xxx/
+	user.language = en
+	user.name = xxx
+	user.timezone = Europe/Paris
+2015-03-30 11:46:22,554 DEBUG [org.jboss.as.config] (MSC service thread 1-8) VM Arguments: -Xmx512m -XX:MaxPermSize=256m -ea -Djboss.home.dir=/xxx/wildfly-8.2.0.Final -Dorg.jboss.boot.log.file=/xxx/wildfly-8.2.0.Final/standalone/log/server.log -Dlogging.configuration=file:/xxx/wildfly-8.2.0.Final/standalone/configuration/logging.properties -Djboss.bundles.dir=/xxx/wildfly-8.2.0.Final/bundles 
+2015-03-30 11:46:23,463 INFO  [org.jboss.as.server] (Controller Boot Thread) JBAS015888: Creating http management service using socket-binding (management-http)
+2015-03-30 11:46:23,479 INFO  [org.xnio] (MSC service thread 1-12) XNIO version 3.3.0.Final
+2015-03-30 11:46:23,486 INFO  [org.xnio.nio] (MSC service thread 1-12) XNIO NIO Implementation Version 3.3.0.Final
+2015-03-30 11:46:23,515 INFO  [org.jboss.as.clustering.infinispan] (ServerService Thread Pool -- 32) JBAS010280: Activating Infinispan subsystem.
+2015-03-30 11:46:23,524 INFO  [org.jboss.remoting] (MSC service thread 1-12) JBoss Remoting version 4.0.6.Final
+2015-03-30 11:46:23,524 INFO  [org.wildfly.extension.io] (ServerService Thread Pool -- 31) WFLYIO001: Worker 'default' has auto-configured to 16 core threads with 128 task threads based on your 8 available processors
+2015-03-30 11:46:23,537 INFO  [org.jboss.as.jsf] (ServerService Thread Pool -- 38) JBAS012615: Activated the following JSF Implementations: [main]
+2015-03-30 11:46:23,537 WARN  [org.jboss.as.txn] (ServerService Thread Pool -- 46) JBAS010153: Node identifier property is set to the default value. Please make sure it is unique.
+2015-03-30 11:46:23,540 INFO  [org.jboss.as.naming] (ServerService Thread Pool -- 40) JBAS011800: Activating Naming Subsystem
+2015-03-30 11:46:23,545 INFO  [org.jboss.as.security] (ServerService Thread Pool -- 45) JBAS013171: Activating Security Subsystem
+2015-03-30 11:46:23,561 INFO  [org.jboss.as.security] (MSC service thread 1-11) JBAS013170: Current PicketBox version=4.0.21.Final
+2015-03-30 11:46:23,577 INFO  [org.jboss.as.webservices] (ServerService Thread Pool -- 48) JBAS015537: Activating WebServices Extension
+2015-03-30 11:46:23,582 INFO  [org.jboss.as.connector.logging] (MSC service thread 1-9) JBAS010408: Starting JCA Subsystem (IronJacamar 1.1.9.Final)
+2015-03-30 11:46:23,612 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 27) JBAS010403: Deploying JDBC-compliant driver class org.h2.Driver (version 1.3)
+2015-03-30 11:46:23,624 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-4) JBAS010417: Started Driver service with driver-name = h2
+2015-03-30 11:46:23,645 INFO  [org.jboss.as.connector.subsystems.datasources] (ServerService Thread Pool -- 27) JBAS010403: Deploying JDBC-compliant driver class org.hsqldb.jdbc.JDBCDriver (version 2.3)
+2015-03-30 11:46:23,647 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-9) JBAS010417: Started Driver service with driver-name = hsqldb
+2015-03-30 11:46:23,658 INFO  [org.jboss.as.naming] (MSC service thread 1-2) JBAS011802: Starting Naming Service
+2015-03-30 11:46:23,662 INFO  [org.jboss.as.mail.extension] (MSC service thread 1-11) JBAS015400: Bound mail session [java:jboss/mail/Default]
+2015-03-30 11:46:23,687 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-15) JBAS017502: Undertow 1.1.0.Final starting
+2015-03-30 11:46:23,687 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 47) JBAS017502: Undertow 1.1.0.Final starting
+2015-03-30 11:46:23,875 INFO  [org.wildfly.extension.undertow] (ServerService Thread Pool -- 47) JBAS017527: Creating file handler for path /xxx/wildfly-8.2.0.Final/welcome-content
+2015-03-30 11:46:23,892 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-9) JBAS017525: Started server default-server.
+2015-03-30 11:46:23,908 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-9) JBAS017531: Host default-host starting
+2015-03-30 11:46:23,997 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-3) JBAS017519: Undertow HTTP listener default listening on /127.0.0.1:8080
+2015-03-30 11:46:24,077 INFO  [org.jboss.as.server.deployment.scanner] (MSC service thread 1-8) JBAS015012: Started FileSystemDeploymentService for directory /xxx/wildfly-8.2.0.Final/standalone/deployments
+2015-03-30 11:46:24,139 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-7) JBAS010400: Bound data source [java:jboss/datasources/test]
+2015-03-30 11:46:24,141 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-6) JBAS010400: Bound data source [java:jboss/datasources/ExampleDS]
+2015-03-30 11:46:24,269 INFO  [org.jboss.ws.common.management] (MSC service thread 1-5) JBWS022052: Starting JBoss Web Services - Stack CXF Server 4.3.2.Final
+2015-03-30 11:46:24,368 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015961: Http management interface listening on http://127.0.0.1:9990/management
+2015-03-30 11:46:24,369 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015951: Admin console listening on http://127.0.0.1:9990
+2015-03-30 11:46:24,372 INFO  [org.jboss.as] (Controller Boot Thread) JBAS015874: WildFly 8.2.0.Final "Tweek" started in 2277ms - Started 190 of 240 services (82 services are lazy, passive or on-demand)
+2015-03-30 11:46:25,116 INFO  [org.jboss.as.repository] (management-handler-thread - 2) JBAS014900: Content added at location /xxx/wildfly-8.2.0.Final/standalone/data/content/b5/0c6b5c49b28ab96864b22d95aec36d8193589e/content
+2015-03-30 11:46:25,130 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) JBAS015876: Starting deployment of "test.war" (runtime-name: "test.war")
+2015-03-30 11:46:25,503 INFO  [org.jboss.weld.deployer] (MSC service thread 1-1) JBAS016002: Processing weld deployment test.war
+2015-03-30 11:46:25,555 INFO  [org.hibernate.validator.internal.util.Version] (MSC service thread 1-1) HV000001: Hibernate Validator 5.1.3.Final
+2015-03-30 11:46:25,613 INFO  [org.jboss.as.ejb3.deployment.processors.EjbJndiBindingsDeploymentUnitProcessor] (MSC service thread 1-1) JNDI bindings for session bean named ClientBuisness in deployment unit deployment "test.war" are as follows:
+
+	java:global/test/ClientBuisness!fr.ejb.test.buisness.ClientBuisness
+	java:app/test/ClientBuisness!fr.ejb.test.buisness.ClientBuisness
+	java:module/ClientBuisness!fr.ejb.test.buisness.ClientBuisness
+	java:global/test/ClientBuisness
+	java:app/test/ClientBuisness
+	java:module/ClientBuisness
+
+2015-03-30 11:46:25,743 ERROR [org.jboss.msc.service.fail] (MSC service thread 1-12) MSC000001: Failed to start service jboss.deployment.unit."test.war".INSTALL: org.jboss.msc.service.StartException in service jboss.deployment.unit."test.war".INSTALL: JBAS018733: Failed to process phase INSTALL of deployment "test.war"
+	at org.jboss.as.server.deployment.DeploymentUnitPhaseService.start(DeploymentUnitPhaseService.java:166) [wildfly-server-8.2.0.Final.jar:8.2.0.Final]
+	at org.jboss.msc.service.ServiceControllerImpl$StartTask.startService(ServiceControllerImpl.java:1948) [jboss-msc-1.2.2.Final.jar:1.2.2.Final]
+	at org.jboss.msc.service.ServiceControllerImpl$StartTask.run(ServiceControllerImpl.java:1881) [jboss-msc-1.2.2.Final.jar:1.2.2.Final]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142) [rt.jar:1.8.0_40-internal]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617) [rt.jar:1.8.0_40-internal]
+	at java.lang.Thread.run(Thread.java:745) [rt.jar:1.8.0_40-internal]
+Caused by: org.jboss.as.server.deployment.DeploymentUnitProcessingException: JBAS011047: Component class fr.ejb.test.buisness.ClientBuisness for component ClientBuisness has errors: 
+JBAS011440: Can't find a persistence unit named PU in deployment "test.war"
+	at org.jboss.as.ee.component.deployers.ModuleJndiBindingProcessor$1.handle(ModuleJndiBindingProcessor.java:159)
+	at org.jboss.as.ee.component.ClassDescriptionTraversal.run(ClassDescriptionTraversal.java:54)
+	at org.jboss.as.ee.component.deployers.ModuleJndiBindingProcessor.processClassConfigurations(ModuleJndiBindingProcessor.java:152)
+	at org.jboss.as.ee.component.deployers.ModuleJndiBindingProcessor.deploy(ModuleJndiBindingProcessor.java:145)
+	at org.jboss.as.server.deployment.DeploymentUnitPhaseService.start(DeploymentUnitPhaseService.java:159) [wildfly-server-8.2.0.Final.jar:8.2.0.Final]
+	... 5 more
+
+2015-03-30 11:46:25,749 ERROR [org.jboss.as.controller.management-operation] (management-handler-thread - 2) JBAS014613: Operation ("deploy") failed - address: ([("deployment" => "test.war")]) - failure description: {
+    "JBAS014671: Failed services" => {"jboss.deployment.unit.\"test.war\".INSTALL" => "org.jboss.msc.service.StartException in service jboss.deployment.unit.\"test.war\".INSTALL: JBAS018733: Failed to process phase INSTALL of deployment \"test.war\"
+    Caused by: org.jboss.as.server.deployment.DeploymentUnitProcessingException: JBAS011047: Component class fr.ejb.test.buisness.ClientBuisness for component ClientBuisness has errors: 
+JBAS011440: Can't find a persistence unit named PU in deployment \"test.war\""},
+    "JBAS014771: Services with missing/unavailable dependencies" => ["jboss.deployment.unit.\"test.war\".weld.weldClassIntrospector is missing [jboss.deployment.unit.\"test.war\".beanmanager]"]
+}
+2015-03-30 11:46:25,751 ERROR [org.jboss.as.server] (management-handler-thread - 2) JBAS015870: Deploy of deployment "test.war" was rolled back with the following failure message: 
+{
+    "JBAS014671: Failed services" => {"jboss.deployment.unit.\"test.war\".INSTALL" => "org.jboss.msc.service.StartException in service jboss.deployment.unit.\"test.war\".INSTALL: JBAS018733: Failed to process phase INSTALL of deployment \"test.war\"
+    Caused by: org.jboss.as.server.deployment.DeploymentUnitProcessingException: JBAS011047: Component class fr.ejb.test.buisness.ClientBuisness for component ClientBuisness has errors: 
+JBAS011440: Can't find a persistence unit named PU in deployment \"test.war\""},
+    "JBAS014771: Services with missing/unavailable dependencies" => ["jboss.deployment.unit.\"test.war\".weld.weldClassIntrospector is missing [jboss.deployment.unit.\"test.war\".beanmanager]"]
+}
+2015-03-30 11:46:25,768 INFO  [org.jboss.as.server.deployment] (MSC service thread 1-4) JBAS015877: Stopped deployment test.war (runtime-name: test.war) in 10ms
+2015-03-30 11:46:25,769 INFO  [org.jboss.as.controller] (management-handler-thread - 2) JBAS014774: Service status report
+JBAS014775:    New missing/unsatisfied dependencies:
+      service jboss.deployment.unit."test.war".beanmanager (missing) dependents: [service jboss.deployment.unit."test.war".weld.weldClassIntrospector] 
+JBAS014777:   Services which failed to start:      service jboss.deployment.unit."test.war".INSTALL
+
+2015-03-30 11:46:25,961 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-6) JBAS010409: Unbound data source [java:jboss/datasources/ExampleDS]
+2015-03-30 11:46:25,962 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-6) JBAS017532: Host default-host stopping
+2015-03-30 11:46:25,963 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-13) JBAS010409: Unbound data source [java:jboss/datasources/test]
+2015-03-30 11:46:25,971 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-14) JBAS017521: Undertow HTTP listener default suspending
+2015-03-30 11:46:25,979 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-15) JBAS010418: Stopped Driver service with driver-name = h2
+2015-03-30 11:46:25,976 INFO  [org.jboss.as.connector.deployers.jdbc] (MSC service thread 1-12) JBAS010418: Stopped Driver service with driver-name = hsqldb
+2015-03-30 11:46:25,997 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-14) JBAS017520: Undertow HTTP listener default stopped, was bound to /127.0.0.1:8080
+2015-03-30 11:46:26,004 INFO  [org.wildfly.extension.undertow] (MSC service thread 1-1) JBAS017506: Undertow 1.1.0.Final stopping
+2015-03-30 11:46:26,018 INFO  [org.jboss.as] (MSC service thread 1-7) JBAS015950: WildFly 8.2.0.Final "Tweek" stopped in 63ms
+2015-03-30 11:46:35,232 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-16) JBAS010409: Unbound data source [java:jboss/datasources/test]
+2015-03-30 11:46:36,232 INFO  [org.jboss.as.connector.subsystems.datasources] (MSC service thread 1-16) JBAS010409: Unbound data source [java:jboss/datasources/test]
