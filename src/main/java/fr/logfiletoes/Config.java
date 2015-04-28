@@ -43,10 +43,10 @@ public class Config {
         String json = new String(Files.readAllBytes(Paths.get(filepath)));
         JSONTokener jsont = new JSONTokener(json);
         JSONObject config = (JSONObject)jsont.nextValue();
-        JSONArray units = config.getJSONArray("unit");
-        logger.fine(units.length() + " unit(s)");
-        for (int i = 0; i < units.length(); i++) {
-            JSONObject unitFormJson = units.getJSONObject(i);
+        JSONArray unitsJSON = config.getJSONArray("unit");
+        logger.fine(unitsJSON.length() + " unit(s)");
+        for (int i = 0; i < unitsJSON.length(); i++) {
+            JSONObject unitFormJson = unitsJSON.getJSONObject(i);
             Unit unit = createUnit(unitFormJson);
             if (unit != null) {
                 this.units.add(unit);
@@ -80,17 +80,14 @@ public class Config {
 
         try {
             String pattern = unitFormJson.getString("pattern");
-            try {
-                unit.setLogPattern(pattern);
-            } catch(PatternSyntaxException exception) {
-                logger.log(Level.WARNING, "pattern error", exception);
-                return null;
-            }
+            unit.setLogPattern(pattern);
         } catch(JSONException exception) {
             logger.warning("Pattern of unit config is required");
             return null;
+        } catch(PatternSyntaxException exception) {
+            logger.log(Level.WARNING, "pattern error", exception);
+            return null;
         }
-        
 
         try {
             JSONObject elasticSearchJson = unitFormJson.getJSONObject("elasticsearch");
@@ -119,17 +116,16 @@ public class Config {
                 }
             }
             unit.setGroupToField(mappingGroupToField);
-        } catch(JSONException exception) {}
+        } catch(JSONException exception) {
+        }
 
         try {
             String concatPreviousLog = unitFormJson.getString("concatPreviousLog");
-            try {
-                unit.setConcatPreviousPattern(concatPreviousLog);
-            } catch(PatternSyntaxException exception) {
-                logger.log(Level.WARNING, "concatPreviousLog error", exception);
-            }
+            unit.setConcatPreviousPattern(concatPreviousLog);
         } catch(JSONException exception) {
             logger.warning("concatPreviousLog can be used to no matching is concat previous log line");
+        } catch(PatternSyntaxException exception) {
+            logger.log(Level.WARNING, "concatPreviousLog error", exception);
         }
 
         try {
@@ -192,19 +188,22 @@ public class Config {
             String type = elasticSearchJson.getString("type");
             elasticSearch.setType(type);
         // Optionnal
-        } catch(JSONException exception) {}
+        } catch(JSONException exception) {
+        }
         
         try {
             String login = elasticSearchJson.getString("login");
             elasticSearch.setLogin(login);
         // Optionnal
-        } catch(JSONException exception) {}
+        } catch(JSONException exception) {
+        }
         
         try {
             String password = elasticSearchJson.getString("password");
             elasticSearch.setPassword(password);
         // Optionnal
-        } catch(JSONException exception) {}
+        } catch(JSONException exception) {
+        }
         
         return elasticSearch;
     }
