@@ -29,10 +29,17 @@ import org.apache.http.impl.client.HttpClients;
  */
 public class Main {
     
-    private static Logger logger = Logger.getLogger(Main.class.getName());
+    private static Logger LOG = Logger.getLogger(Main.class.getName());
+
+    private Main() {
+    }
     
-//    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
-    
+    /**
+     * Convert InputStream to String
+     * @param is InputStream read to convert to String
+     * @return String from InputStream
+     * @throws IOException 
+     */
     public static String inputSteamToString(InputStream is) throws IOException {
         byte[] buffer = new byte[1024];
         StringBuilder sb = new StringBuilder();
@@ -43,57 +50,15 @@ public class Main {
         return sb.toString();
     }
     
-    public static void main(String[] args) throws IOException, Exception {
-        String configFile = System.getProperty("fr.logfiletoes.config.file");
-        if (configFile == null) {
-            logger.severe("-Dfr.logfiletoes.config.file is required for config file");
-            System.exit(1);
-        } else {
-            File config = new File(configFile);
-            if (config.exists()== false) {
-                logger.severe("\"" + config.getAbsolutePath() + "\" not found");
-                System.exit(2);
-            }
-            if (config.isFile() == false) {
-                logger.severe("\"" + config.getAbsolutePath() + "\" is not file");
-                System.exit(3);
-            }
-        }
+    public static void main(String[] args) throws IOException {
+        String configFile = getConfigFilePath();
         
-        logger.info("Load config file \"" + configFile + "\"");
+        LOG.log(Level.INFO, "Load config file \"{0}\"", configFile);
         Config config = new Config(configFile);
-        logger.info("Config file OK");
+        LOG.info("Config file OK");
         
         for (Unit unit : config.getUnits()) {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpClientContext context = HttpClientContext.create();
-            HttpGet httpGet = new HttpGet(unit.getElasticSearch().getUrl());
-            if (unit.getElasticSearch().getLogin() != null && unit.getElasticSearch().getPassword() != null) {
-                UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(unit.getElasticSearch().getLogin(), unit.getElasticSearch().getPassword());
-                CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-                credentialsProvider.setCredentials(AuthScope.ANY, credentials);
-                context.setCredentialsProvider(credentialsProvider);
-            }
-            CloseableHttpResponse elasticSearchCheck = httpclient.execute(httpGet, context);
-            logger.log(Level.INFO, "Check index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
-            logger.log(Level.INFO, inputSteamToString(elasticSearchCheck.getEntity().getContent()));
-            if (elasticSearchCheck.getStatusLine().getStatusCode() == 404) {
-                // Création de l'index
-                HttpPut httpPut = new HttpPut(unit.getElasticSearch().getUrl());
-                httpclient.execute(httpPut, context);
-                CloseableHttpResponse elasticSearchCheckCreate = httpclient.execute(httpGet, context);
-                logger.log(Level.INFO, "create index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
-                if (elasticSearchCheckCreate.getStatusLine().getStatusCode() != 200) {
-                    logger.log(Level.SEVERE, "unable to create index \"{0}\"", unit.getElasticSearch().getUrl());
-                    continue;
-                }
-            } else if(elasticSearchCheck.getStatusLine().getStatusCode() != 200) {
-                logger.severe("unkown error elasticsearch");
-                continue;
-            }
-            logger.log(Level.INFO, "Initialisation ElasticSearch r\u00e9ussi pour {0}", unit.getElasticSearch().getUrl());
-            
-            Tailer create = Tailer.create(unit.getLogFile(), new TailerListenerUnit(unit, httpclient, context));
+            startUnit(unit);
         }
         
         while(true) {
@@ -103,5 +68,66 @@ public class Main {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    /**
+     * Start unit tailer and ElasticSearch check
+     * @param unit Unit to start
+     * @return Tailer if start success, null if failed
+     * @throws IOException 
+     */
+    public static Tailer startUnit(Unit unit) throws IOException {
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpClientContext context = HttpClientContext.create();
+        HttpGet httpGet = new HttpGet(unit.getElasticSearch().getUrl());
+        if (unit.getElasticSearch().getLogin() != null && unit.getElasticSearch().getPassword() != null) {
+            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(unit.getElasticSearch().getLogin(), unit.getElasticSearch().getPassword());
+            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            credentialsProvider.setCredentials(AuthScope.ANY, credentials);
+            context.setCredentialsProvider(credentialsProvider);
+        }
+        CloseableHttpResponse elasticSearchCheck = httpclient.execute(httpGet, context);
+        LOG.log(Level.INFO, "Check index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
+        LOG.log(Level.INFO, inputSteamToString(elasticSearchCheck.getEntity().getContent()));
+        if (elasticSearchCheck.getStatusLine().getStatusCode() == 404) {
+            // Création de l'index
+            HttpPut httpPut = new HttpPut(unit.getElasticSearch().getUrl());
+            httpclient.execute(httpPut, context);
+            CloseableHttpResponse elasticSearchCheckCreate = httpclient.execute(httpGet, context);
+            LOG.log(Level.INFO, "create index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
+            if (elasticSearchCheckCreate.getStatusLine().getStatusCode() != 200) {
+                LOG.log(Level.SEVERE, "unable to create index \"{0}\"", unit.getElasticSearch().getUrl());
+                return null;
+            }
+        } else if(elasticSearchCheck.getStatusLine().getStatusCode() != 200) {
+            LOG.severe("unkown error elasticsearch");
+            return null;
+        }
+        LOG.log(Level.INFO, "Initialisation ElasticSearch r\u00e9ussi pour {0}", unit.getElasticSearch().getUrl());
+
+        return Tailer.create(unit.getLogFile(), new TailerListenerUnit(unit, httpclient, context));
+    }
+    
+    /**
+     * Get config file and check if existe
+     * @return 
+     */
+    public static String getConfigFilePath() {
+        String configFile = System.getProperty("fr.logfiletoes.config.file");
+        if (configFile == null) {
+            LOG.severe("-Dfr.logfiletoes.config.file is required for config file");
+            System.exit(1);
+        } else {
+            File config = new File(configFile);
+            if (config.exists()== false) {
+                LOG.severe("\"" + config.getAbsolutePath() + "\" not found");
+                System.exit(2);
+            }
+            if (config.isFile() == false) {
+                LOG.severe("\"" + config.getAbsolutePath() + "\" is not file");
+                System.exit(3);
+            }
+        }
+        return configFile;
     }
 }

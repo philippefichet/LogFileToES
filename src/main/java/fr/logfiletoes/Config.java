@@ -31,7 +31,7 @@ import org.json.JSONTokener;
  */
 public class Config {
     
-    private static Logger logger = Logger.getLogger(Config.class.getName());
+    private static Logger LOG = Logger.getLogger(Config.class.getName());
     private final List<Unit> units = new ArrayList<>();
     
     /**
@@ -44,14 +44,14 @@ public class Config {
         JSONTokener jsont = new JSONTokener(json);
         JSONObject config = (JSONObject)jsont.nextValue();
         JSONArray unitsJSON = config.getJSONArray("unit");
-        logger.fine(unitsJSON.length() + " unit(s)");
+        LOG.fine(unitsJSON.length() + " unit(s)");
         for (int i = 0; i < unitsJSON.length(); i++) {
             JSONObject unitFormJson = unitsJSON.getJSONObject(i);
             Unit unit = createUnit(unitFormJson);
             if (unit != null) {
                 this.units.add(unit);
             } else {
-                logger.warning("unit skip : " + unitFormJson.toString());
+                LOG.warning("unit skip : " + unitFormJson.toString());
             }
         }
     }
@@ -70,11 +70,11 @@ public class Config {
             if(file.exists()) {
                 unit.setLogFile(file);
             } else {
-                logger.warning("file error");
+                LOG.warning("file error");
                 return null;
             }
         } catch(JSONException exception) {
-            logger.warning("file is required");
+            LOG.warning("file is required");
             return null;
         }
 
@@ -82,10 +82,10 @@ public class Config {
             String pattern = unitFormJson.getString("pattern");
             unit.setLogPattern(pattern);
         } catch(JSONException exception) {
-            logger.warning("Pattern of unit config is required");
+            LOG.warning("Pattern of unit config is required");
             return null;
         } catch(PatternSyntaxException exception) {
-            logger.log(Level.WARNING, "pattern error", exception);
+            LOG.log(Level.WARNING, "pattern error", exception);
             return null;
         }
 
@@ -93,29 +93,18 @@ public class Config {
             JSONObject elasticSearchJson = unitFormJson.getJSONObject("elasticsearch");
             ElasticSearch createElasticSearch = createElasticSearch(elasticSearchJson);
             if (createElasticSearch == null) {
-                logger.log(Level.WARNING, "elasticsearch error");
+                LOG.log(Level.WARNING, "elasticsearch error");
             } else {
                 unit.setElasticSearch(createElasticSearch);
             }
         } catch(JSONException exception) {
-            logger.warning("elasticsearch is required");
+            LOG.warning("elasticsearch is required");
             return null;
         }
         
         try {
             JSONObject mapping = unitFormJson.getJSONObject("fields");
-            Map<Integer, String> mappingGroupToField = new HashMap<>();
-            Iterator<String> keys = mapping.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                try {
-                    Integer groupPosition = Integer.parseInt(key);
-                    mappingGroupToField.put(groupPosition, mapping.getString(key));
-                } catch(NumberFormatException exception) {
-                    logger.warning(key + " is not an Integer");
-                }
-            }
-            unit.setGroupToField(mappingGroupToField);
+            unit.setGroupToField(extractMappingForUnit(mapping));
         } catch(JSONException exception) {
         }
 
@@ -123,9 +112,9 @@ public class Config {
             String concatPreviousLog = unitFormJson.getString("concatPreviousLog");
             unit.setConcatPreviousPattern(concatPreviousLog);
         } catch(JSONException exception) {
-            logger.warning("concatPreviousLog can be used to no matching is concat previous log line");
+            LOG.warning("concatPreviousLog can be used to no matching is concat previous log line");
         } catch(PatternSyntaxException exception) {
-            logger.log(Level.WARNING, "concatPreviousLog error", exception);
+            LOG.log(Level.WARNING, "concatPreviousLog error", exception);
         }
 
         try {
@@ -136,17 +125,17 @@ public class Config {
             try {
                 field = timestampConfig.getInt("field");
             } catch(JSONException exception) {
-                logger.warning("Position of field is required for timestamp");
+                LOG.warning("Position of field is required for timestamp");
             }
             try {
                 format = timestampConfig.getString("format");
             } catch(JSONException exception) {
-                logger.warning("Format (from SimpleDateFormat) is required for date to timestamp");
+                LOG.warning("Format (from SimpleDateFormat) is required for date to timestamp");
             }
             try {
                 addField = timestampConfig.getString("addField");
             } catch(JSONException exception) {
-                logger.warning("addField is required for add timestamp in new field in elasticsearch format");
+                LOG.warning("addField is required for add timestamp in new field in elasticsearch format");
             }
             
             if (field != null && format != null && addField != null) {
@@ -180,7 +169,7 @@ public class Config {
             String url = elasticSearchJson.getString("url");
             elasticSearch.setUrl(url);
         } catch(JSONException exception) {
-            logger.warning("elasticsearch url is required");
+            LOG.warning("elasticsearch url is required");
             return null;
         }
         
@@ -206,5 +195,25 @@ public class Config {
         }
         
         return elasticSearch;
+    }
+
+    /**
+     * Extract mapping for regex group from JSON
+     * @param mapping JSON to extract mappgin for regex group
+     * @return Mappgin for regex group
+     */
+    private Map<Integer, String> extractMappingForUnit(JSONObject mapping) {
+        Map<Integer, String> mappingGroupToField = new HashMap<>();
+        Iterator<String> keys = mapping.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                try {
+                    Integer groupPosition = Integer.parseInt(key);
+                    mappingGroupToField.put(groupPosition, mapping.getString(key));
+                } catch(NumberFormatException exception) {
+                    LOG.warning(key + " is not an Integer");
+                }
+            }
+        return mappingGroupToField;
     }
 }

@@ -5,19 +5,16 @@
  */
 package fr.logfiletoes;
 
-import static fr.logfiletoes.Main.inputSteamToString;
 import fr.logfiletoes.config.Unit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -36,8 +33,7 @@ public class TailerListenerUnit extends TailerListenerAdapter {
     private JSONObject json = null;
     private Unit unit = null;
     private final CloseableHttpClient httpclient;
-    private SimpleDateFormat sdf;
-    private static Logger logger = Logger.getLogger(TailerListenerUnit.class.getName());
+    private static Logger LOG = Logger.getLogger(TailerListenerUnit.class.getName());
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
     private HttpClientContext context;
 
@@ -45,36 +41,34 @@ public class TailerListenerUnit extends TailerListenerAdapter {
         this.unit = unit;
         this.httpclient = httpclient;
         this.context = context;
-        // TODO en config si possible et utile
-        sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
     }
 
     @Override
     public void handle(Exception ex) {
         super.handle(ex);
-        logger.log(Level.SEVERE, "Error handle", ex);
+        LOG.log(Level.SEVERE, "Error handle", ex);
     }
 
     @Override
     public void fileRotated() {
         super.fileRotated();
-        logger.info(unit.getLogFile().getAbsolutePath() + " rotated");
+        LOG.info(unit.getLogFile().getAbsolutePath() + " rotated");
     }
 
     @Override
     public void fileNotFound() {
         super.fileNotFound();
-        logger.warning(unit.getLogFile().getAbsolutePath() + " not found");
+        LOG.warning(unit.getLogFile().getAbsolutePath() + " not found");
     }
 
     @Override
     public void init(Tailer tailer) {
         super.init(tailer);
-        logger.info("init : " + tailer.toString());
+        LOG.info("init : " + tailer.toString());
     }
     
     public void handle(String line) {
-        logger.log(Level.FINEST, "handle log: " + line);
+        LOG.log(Level.FINEST, "handle log: " + line);
         Matcher matcher = unit.getPattern().matcher(line);
         if (unit.getConcatPreviousPattern() != null && unit.getConcatPreviousPattern().matcher(line).find() == false) {
             if (sb != null) {
@@ -91,17 +85,17 @@ public class TailerListenerUnit extends TailerListenerAdapter {
                     elasticSearchPost.setEntity(new StringEntity(json.toString()));
                     CloseableHttpResponse execute = httpclient.execute(elasticSearchPost, context);
                     if (execute.getStatusLine().getStatusCode() < 200 || execute.getStatusLine().getStatusCode() >= 300) {
-                        logger.log(Level.SEVERE, "Add log to ElasticSearch failed : " + execute.getStatusLine().getStatusCode());
-                        logger.log(Level.SEVERE, inputSteamToString(execute.getEntity().getContent()));
+                        LOG.log(Level.SEVERE, "Add log to ElasticSearch failed : " + execute.getStatusLine().getStatusCode());
+                        LOG.log(Level.SEVERE, inputSteamToString(execute.getEntity().getContent()));
                     } else {
-                        logger.log(Level.FINE, "Add log to ElasticSearch successful.");
-                        logger.log(Level.FINER, json.toString());
+                        LOG.log(Level.FINE, "Add log to ElasticSearch successful.");
+                        LOG.log(Level.FINER, json.toString());
                     }
                     execute.close();
                 } catch (UnsupportedEncodingException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, null, ex);
                 } catch (IOException ex) {
-                    logger.log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, null, ex);
                 }
             }
             sb = new StringBuilder(line);
@@ -126,7 +120,7 @@ public class TailerListenerUnit extends TailerListenerAdapter {
                             Date timestamp = unit.getSdf().parse(date);
                             json.put(unit.getAddFieldToTimestamp(), dateFormat.format(timestamp));
                         } catch(ParseException exception) {
-                            logger.warning("Unable to parse date \"" + date + "\" with pattern \"" + unit.getSdf().toPattern() + "\"");
+                            LOG.warning("Unable to parse date \"" + date + "\" with pattern \"" + unit.getSdf().toPattern() + "\"");
                         }
                     }
                 }
