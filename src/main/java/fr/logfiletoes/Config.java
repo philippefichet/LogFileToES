@@ -64,7 +64,7 @@ public class Config {
     protected Unit createUnit(JSONObject unitFormJson) {
         Unit unit = new Unit();
 
-        try {
+        if (unitFormJson.has("file")) {
             String filepathUnit = unitFormJson.getString("file");
             File file = new File(filepathUnit);
             if(file.exists()) {
@@ -73,23 +73,25 @@ public class Config {
                 LOG.warning("file error");
                 return null;
             }
-        } catch(JSONException exception) {
+        } else {
             LOG.warning("file is required");
             return null;
         }
 
-        try {
+        if(unitFormJson.has("pattern")) {
             String pattern = unitFormJson.getString("pattern");
+            try {
             unit.setLogPattern(pattern);
-        } catch(JSONException exception) {
+            } catch(PatternSyntaxException exception) {
+                LOG.log(Level.WARNING, "pattern error", exception);
+                return null;
+            }
+        } else {
             LOG.warning("Pattern of unit config is required");
             return null;
-        } catch(PatternSyntaxException exception) {
-            LOG.log(Level.WARNING, "pattern error", exception);
-            return null;
         }
-
-        try {
+        
+        if(unitFormJson.has("elasticsearch")) {
             JSONObject elasticSearchJson = unitFormJson.getJSONObject("elasticsearch");
             ElasticSearch createElasticSearch = createElasticSearch(elasticSearchJson);
             if (createElasticSearch == null) {
@@ -97,44 +99,45 @@ public class Config {
             } else {
                 unit.setElasticSearch(createElasticSearch);
             }
-        } catch(JSONException exception) {
+        } else {
             LOG.warning("elasticsearch is required");
             return null;
         }
         
-        try {
+        if(unitFormJson.has("fields")) {
             JSONObject mapping = unitFormJson.getJSONObject("fields");
             unit.setGroupToField(extractMappingForUnit(mapping));
-        } catch(JSONException exception) {
         }
 
-        try {
+        if(unitFormJson.has("concatPreviousLog")) {
             String concatPreviousLog = unitFormJson.getString("concatPreviousLog");
-            unit.setConcatPreviousPattern(concatPreviousLog);
-        } catch(JSONException exception) {
-            LOG.warning("concatPreviousLog can be used to no matching is concat previous log line");
-        } catch(PatternSyntaxException exception) {
-            LOG.log(Level.WARNING, "concatPreviousLog error", exception);
+            try {
+                unit.setConcatPreviousPattern(concatPreviousLog);
+            } catch(PatternSyntaxException exception) {
+                LOG.log(Level.WARNING, "concatPreviousLog error", exception);
+            }
+        } else {
+            LOG.info("concatPreviousLog can be used to no matching is concat previous log line");
         }
-
-        try {
+        
+        if(unitFormJson.has("timestamp")) {
             JSONObject timestampConfig = unitFormJson.getJSONObject("timestamp");
             Integer field = null;
             String format = null;
             String addField = null;
-            try {
+            if(timestampConfig.has("field")) {
                 field = timestampConfig.getInt("field");
-            } catch(JSONException exception) {
+            } else {
                 LOG.warning("Position of field is required for timestamp");
             }
-            try {
+            if(timestampConfig.has("format")) {
                 format = timestampConfig.getString("format");
-            } catch(JSONException exception) {
+            } else {
                 LOG.warning("Format (from SimpleDateFormat) is required for date to timestamp");
             }
-            try {
+            if(timestampConfig.has("addField")) {
                 addField = timestampConfig.getString("addField");
-            } catch(JSONException exception) {
+            } else {
                 LOG.warning("addField is required for add timestamp in new field in elasticsearch format");
             }
             
@@ -143,8 +146,6 @@ public class Config {
                 unit.setSdf(new SimpleDateFormat(format));
                 unit.setAddFieldToTimestamp(addField);
             }
-        } catch(JSONException exception) {
-            // Optionnal parameter
         }
 
         return unit;
