@@ -33,7 +33,7 @@ public class TailerListenerUnit extends TailerListenerAdapter {
     private JSONObject json = null;
     private Unit unit = null;
     private final CloseableHttpClient httpclient;
-    private static Logger LOG = Logger.getLogger(TailerListenerUnit.class.getName());
+    private static final Logger LOG = Logger.getLogger(TailerListenerUnit.class.getName());
     private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
     private HttpClientContext context;
 

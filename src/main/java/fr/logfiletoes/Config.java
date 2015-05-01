@@ -31,7 +31,7 @@ import org.json.JSONTokener;
  */
 public class Config {
     
-    private static Logger LOG = Logger.getLogger(Config.class.getName());
+    private static final Logger LOG = Logger.getLogger(Config.class.getName());
     private final List<Unit> units = new ArrayList<>();
     
     /**
