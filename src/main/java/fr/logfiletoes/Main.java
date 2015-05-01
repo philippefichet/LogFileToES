@@ -29,7 +29,7 @@ import org.apache.http.impl.client.HttpClients;
  */
 public class Main {
     
-    private static Logger LOG = Logger.getLogger(Main.class.getName());
+    private static final Logger LOG = Logger.getLogger(Main.class.getName());
 
     private Main() {
     }
@@ -119,11 +119,11 @@ public class Main {
             System.exit(1);
         } else {
             File config = new File(configFile);
-            if (config.exists()== false) {
+            if (!config.exists()) {
                 LOG.severe("\"" + config.getAbsolutePath() + "\" not found");
                 System.exit(2);
             }
-            if (config.isFile() == false) {
+            if (!config.isFile()) {
                 LOG.severe("\"" + config.getAbsolutePath() + "\" is not file");
                 System.exit(3);
             }
