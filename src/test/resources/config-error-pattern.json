@@ -3,13 +3,13 @@
 		"file": "./src/test/resources/wildfly.log",
 		"pattern": "([0-9]",
 		"elasticsearch": {
-			"url": "http://elasticsearch.lab.easyflirt:9200/logdetest",
+			"url": "http://localhost:9200/logdetest",
 			"type": "wildfly"
 		}
 	},{
 		"file": "./src/test/resources/wildfly.log",
 		"elasticsearch": {
-			"url": "https://elasticsearch.easyflirt.com/logdetest",
+			"url": "https://localhost/logdetest",
 			"type": "wildfly",
 			"username": "superlogin",
 			"password": "superpassword"

@@ -4,7 +4,7 @@
         "pattern": "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) ([^ ]+) +\\[([^]]+)\\] \\(([^)]+)\\) (.+)",
         "concatPreviousLog": "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3})",
         "elasticsearch": {
-            "url": "http://elasticsearch.lab.easyflirt:9200/logdetest",
+            "url": "http://localhost:9200/logdetest",
             "type": "wildfly"
         },
         "fields": {

@@ -38,7 +38,7 @@ public class ConfigTest {
         System.out.println("unit = " + unit.getPattern().pattern());
         assertEquals("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) ([^ ]+) +\\[([^]]+)\\] \\(([^)]+)\\) (.+)", unit.getPattern().pattern());
         assertEquals("."+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator+"wildfly.log", unit.getLogFile().getPath());
-        assertEquals("http://elasticsearch.lab.easyflirt:9200/logdetest", unit.getElasticSearch().getUrl());
+        assertEquals("http://localhost:9200/logdetest", unit.getElasticSearch().getUrl());
         assertEquals("wildfly", unit.getElasticSearch().getType());
         assertNull(unit.getElasticSearch().getLogin());
         assertNull(unit.getElasticSearch().getPassword());
@@ -52,7 +52,7 @@ public class ConfigTest {
         unit = config.getUnits().get(1);
         assertEquals("([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) ([^ ]+) +\\[([^]]+)\\] \\(([^)]+)\\) (.+)", unit.getPattern().pattern());
         assertEquals("."+File.separator+"src"+File.separator+"test"+File.separator+"resources"+File.separator+"wildfly.log", unit.getLogFile().getPath());
-        assertEquals("https://elasticsearch.easyflirt.com/logdetest", unit.getElasticSearch().getUrl());
+        assertEquals("https://localhost/logdetest", unit.getElasticSearch().getUrl());
         assertEquals("wildfly", unit.getElasticSearch().getType());
         assertEquals("logindetest", unit.getElasticSearch().getLogin());
         assertEquals("passworddetest", unit.getElasticSearch().getPassword());
