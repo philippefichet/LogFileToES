@@ -1,4 +1,4 @@
-# LogFileToES
+# LogFileToES [![Build Status](https://travis-ci.org/philippefichet/LogFileToES.svg?branch=master)]
 
 # Why
 Simple and speed log parser (Java Regex) and send into ElasticSearch
