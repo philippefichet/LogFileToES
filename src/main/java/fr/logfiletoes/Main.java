@@ -58,7 +58,7 @@ public class Main {
         LOG.info("Config file OK");
         
         for (Unit unit : config.getUnits()) {
-            startUnit(unit);
+            unit.start();
         }
         
         while(true) {
@@ -69,45 +69,7 @@ public class Main {
             }
         }
     }
-    
-    /**
-     * Start unit tailer and ElasticSearch check
-     * @param unit Unit to start
-     * @return Tailer if start success, null if failed
-     * @throws IOException 
-     */
-    public static Tailer startUnit(Unit unit) throws IOException {
-        CloseableHttpClient httpclient = HttpClients.createDefault();
-        HttpClientContext context = HttpClientContext.create();
-        HttpGet httpGet = new HttpGet(unit.getElasticSearch().getUrl());
-        if (unit.getElasticSearch().getLogin() != null && unit.getElasticSearch().getPassword() != null) {
-            UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(unit.getElasticSearch().getLogin(), unit.getElasticSearch().getPassword());
-            CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-            credentialsProvider.setCredentials(AuthScope.ANY, credentials);
-            context.setCredentialsProvider(credentialsProvider);
-        }
-        CloseableHttpResponse elasticSearchCheck = httpclient.execute(httpGet, context);
-        LOG.log(Level.INFO, "Check index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
-        LOG.log(Level.INFO, inputSteamToString(elasticSearchCheck.getEntity().getContent()));
-        if (elasticSearchCheck.getStatusLine().getStatusCode() == 404) {
-            // Création de l'index
-            HttpPut httpPut = new HttpPut(unit.getElasticSearch().getUrl());
-            httpclient.execute(httpPut, context);
-            CloseableHttpResponse elasticSearchCheckCreate = httpclient.execute(httpGet, context);
-            LOG.log(Level.INFO, "create index : \"{0}\"", elasticSearchCheck.getStatusLine().getStatusCode());
-            if (elasticSearchCheckCreate.getStatusLine().getStatusCode() != 200) {
-                LOG.log(Level.SEVERE, "unable to create index \"{0}\"", unit.getElasticSearch().getUrl());
-                return null;
-            }
-        } else if(elasticSearchCheck.getStatusLine().getStatusCode() != 200) {
-            LOG.severe("unkown error elasticsearch");
-            return null;
-        }
-        LOG.log(Level.INFO, "Initialisation ElasticSearch r\u00e9ussi pour {0}", unit.getElasticSearch().getUrl());
 
-        return Tailer.create(unit.getLogFile(), new TailerListenerUnit(unit, httpclient, context));
-    }
-    
     /**
      * Get config file and check if existe
      * @return 
