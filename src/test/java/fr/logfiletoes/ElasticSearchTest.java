@@ -139,7 +139,7 @@ public class ElasticSearchTest {
         // Search log
         SearchResponse response = client.prepareSearch("logdetest")
             .setSearchType(SearchType.DEFAULT)
-            .setQuery(QueryBuilders.matchAllQuery())
+            .setQuery(QueryBuilders.matchQuery("message", "Configured system properties"))
             .setSize(1000)
             .addSort("@timestamp", SortOrder.ASC)
             .execute()
@@ -154,7 +154,8 @@ public class ElasticSearchTest {
         }
         
         // Get information need to test
-        String expected = response.getHits().getHits()[12].getSource().get("message").toString();
+        String expected = response.getHits().getHits()[0].getSource().get("message").toString();
+        System.out.println(expected);
         assertEquals(stacktrace, expected);
 
         // wait request
