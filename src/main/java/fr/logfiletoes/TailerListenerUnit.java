@@ -22,6 +22,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 /**
@@ -91,11 +92,12 @@ public class TailerListenerUnit extends TailerListenerAdapter {
                         LOG.log(Level.FINE, "Add log to ElasticSearch successful.");
                         LOG.log(Level.FINER, json.toString());
                     }
+                    EntityUtils.consume(execute.getEntity());
                     execute.close();
                 } catch (UnsupportedEncodingException ex) {
-                    LOG.log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, "Encoding exception", ex);
                 } catch (IOException ex) {
-                    LOG.log(Level.SEVERE, null, ex);
+                    LOG.log(Level.SEVERE, "IOException", ex);
                 }
             }
             sb = new StringBuilder(line);
