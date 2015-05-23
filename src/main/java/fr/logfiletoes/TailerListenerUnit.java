@@ -9,6 +9,8 @@ import fr.logfiletoes.config.Unit;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,9 +37,19 @@ public class TailerListenerUnit extends TailerListenerAdapter {
     private Unit unit = null;
     private final CloseableHttpClient httpclient;
     private static final Logger LOG = Logger.getLogger(TailerListenerUnit.class.getName());
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ");
+    private static String host;
     private HttpClientContext context;
 
+    static {
+        try {
+            host = InetAddress.getLocalHost().getHostName();
+        } catch(UnknownHostException e) {
+            host = "unkown";
+            LOG.log(Level.SEVERE, "Hostname not found", e);
+        }
+    }
+    
     public TailerListenerUnit(Unit unit, CloseableHttpClient httpclient, HttpClientContext context) {
         this.unit = unit;
         this.httpclient = httpclient;
@@ -78,26 +90,12 @@ public class TailerListenerUnit extends TailerListenerAdapter {
         } else {
             if (sb != null) {
                 json.put("message", sb.toString());
+                json.put("host", host);
                 String id = null;
                 
-                // Sauvegarde de la sb
-                HttpPost elasticSearchPost = new HttpPost(unit.getElasticSearch().getUrl() + "/" + unit.getElasticSearch().getType());
-                try {
-                    elasticSearchPost.setEntity(new StringEntity(json.toString()));
-                    CloseableHttpResponse execute = httpclient.execute(elasticSearchPost, context);
-                    if (execute.getStatusLine().getStatusCode() < 200 || execute.getStatusLine().getStatusCode() >= 300) {
-                        LOG.log(Level.SEVERE, "Add log to ElasticSearch failed : " + execute.getStatusLine().getStatusCode());
-                        LOG.log(Level.SEVERE, inputSteamToString(execute.getEntity().getContent()));
-                    } else {
-                        LOG.log(Level.FINE, "Add log to ElasticSearch successful.");
-                        LOG.log(Level.FINER, json.toString());
-                    }
-                    EntityUtils.consume(execute.getEntity());
-                    execute.close();
-                } catch (UnsupportedEncodingException ex) {
-                    LOG.log(Level.SEVERE, "Encoding exception", ex);
-                } catch (IOException ex) {
-                    LOG.log(Level.SEVERE, "IOException", ex);
+                // Save StringBuilder if concat previous not null (wait stacktrace for example, no log end line)
+                if (unit.getConcatPreviousPattern() != null) {
+                    saveToElasticsearch();
                 }
             }
             sb = new StringBuilder(line);
@@ -109,7 +107,7 @@ public class TailerListenerUnit extends TailerListenerAdapter {
                         json.put(field, matcher.group(i));
                         // Surcharge du message
                         if ("message".equals(field)) {
-                            sb = new StringBuilder(line);
+                            sb = new StringBuilder(matcher.group(i));
                         }
                     }
                 }
@@ -127,6 +125,33 @@ public class TailerListenerUnit extends TailerListenerAdapter {
                     }
                 }
             }
+            
+            // Save immediately StringBuilder if concat previous is null (no multiline log)
+            if (unit.getConcatPreviousPattern() == null) {
+                saveToElasticsearch();
+            }
+
+        }
+    }
+    
+    public void saveToElasticsearch() {
+        HttpPost elasticSearchPost = new HttpPost(unit.getElasticSearch().getUrl() + "/" + unit.getElasticSearch().getType());
+        try {
+            elasticSearchPost.setEntity(new StringEntity(json.toString()));
+            CloseableHttpResponse execute = httpclient.execute(elasticSearchPost, context);
+            if (execute.getStatusLine().getStatusCode() < 200 || execute.getStatusLine().getStatusCode() >= 300) {
+                LOG.log(Level.SEVERE, "Add log to ElasticSearch failed : " + execute.getStatusLine().getStatusCode());
+                LOG.log(Level.SEVERE, inputSteamToString(execute.getEntity().getContent()));
+            } else {
+                LOG.log(Level.FINE, "Add log to ElasticSearch successful.");
+                LOG.log(Level.FINER, json.toString());
+            }
+            EntityUtils.consume(execute.getEntity());
+            execute.close();
+        } catch (UnsupportedEncodingException ex) {
+            LOG.log(Level.SEVERE, "Encoding exception", ex);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, "IOException", ex);
         }
     }
     

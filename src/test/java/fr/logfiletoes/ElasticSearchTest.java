@@ -25,6 +25,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.SortOrder;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
         
 /**
  *
@@ -34,7 +35,7 @@ public class ElasticSearchTest {
     
     private static final Logger LOG = Logger.getLogger(ElasticSearchTest.class.getName());
     
-    private String stacktrace = "2015-03-30 11:46:22,554 DEBUG [org.jboss.as.config] (MSC service thread 1-8) Configured system properties:\n" +
+    private String stacktrace = "Configured system properties:\n" +
 "	awt.toolkit = sun.awt.X11.XToolkit\n" +
 "	file.encoding = UTF-8\n" +
 "	file.encoding.pkg = sun.io\n" +
@@ -119,7 +120,7 @@ public class ElasticSearchTest {
 "	user.timezone = Europe/Paris";
     
     @Test
-    public void es() throws IOException, InterruptedException {
+    public void wildfly() throws IOException, InterruptedException {
         File data = Files.createTempDirectory("it_es_data-").toFile();
         Settings settings = ImmutableSettings.settingsBuilder()
             .put("path.data", data.toString())
@@ -155,8 +156,60 @@ public class ElasticSearchTest {
         
         // Get information need to test
         String expected = response.getHits().getHits()[0].getSource().get("message").toString();
-        System.out.println(expected);
         assertEquals(stacktrace, expected);
+
+        // wait request
+        Thread.sleep(10000);
+        
+        // Close tailer
+        units.get(0).stop();
+        
+        // Close ElasticSearch
+        node.close();
+        
+        // Clean data directory
+        FileUtils.forceDelete(data);
+    }
+    
+    @Test
+    public void fail2ban() throws IOException, InterruptedException {
+        File data = Files.createTempDirectory("it_es_data-").toFile();
+        Settings settings = ImmutableSettings.settingsBuilder()
+            .put("path.data", data.toString())
+            .put("cluster.name", "IT-0002")
+            .build();
+        Node node = NodeBuilder.nodeBuilder().local(true).settings(settings).build();
+        Client client = node.client();
+        node.start();
+        Config config = new Config("./src/test/resources/fail2ban.json");
+        List<Unit> units = config.getUnits();
+        assertEquals(1, units.size());
+        units.get(0).start();
+        
+        // Wait store log
+        Thread.sleep(3000);
+
+        // Search log
+        SearchResponse response = client.prepareSearch("system")
+            .setSearchType(SearchType.DEFAULT)
+            .setQuery(QueryBuilders.matchQuery("message", "58.218.204.248"))
+            .setSize(1000)
+            .addSort("@timestamp", SortOrder.ASC)
+            .execute()
+            .actionGet();
+        if(LOG.isLoggable(Level.FINEST)) {
+            for (SearchHit hit : response.getHits().getHits()) {
+                LOG.finest("-----------------");
+                hit.getSource().forEach((key, value) -> {
+                    LOG.log(Level.FINEST, "{0} = {1}", new Object[]{key, value});
+                });
+            }
+        }
+        
+        // Get information need to test
+        assertEquals(6, response.getHits().getHits().length);
+        assertEquals("Found 58.218.204.248", response.getHits().getHits()[0].getSource().get("message").toString());
+        assertEquals("Ban 58.218.204.248", response.getHits().getHits()[5].getSource().get("message").toString());
 
         // wait request
         Thread.sleep(10000);

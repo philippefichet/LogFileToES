@@ -1,0 +1,22 @@
+{
+    "unit": [{
+        "file": "./src/test/resources/fail2ban.log",
+        "pattern": "([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}) ([^ ]+) +\\[([^]]+)\\]: ([^ ]+) +\\[([^]]+)\\] (.+)",
+        "elasticsearch": {
+            "url": "http://localhost:19200/system",
+            "type": "fail2ban"
+        },
+        "fields": {
+            "1": "date",
+            "2": "logger",
+            "4": "level",
+            "5": "programm",
+            "6": "message"
+        },
+        "timestamp": {
+            "field": 1,
+            "format": "yyyy-MM-dd HH:mm:ss,S",
+            "addField": "@timestamp"
+        }
+    }]
+}
